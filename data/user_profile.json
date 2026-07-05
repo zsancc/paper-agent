@@ -1,0 +1,33 @@
+{
+  "user": "Nihao",
+  "research_focus": [
+    "LiDAR-相机融合感知",
+    "动态障碍物检测与跟踪",
+    "目标级(object-level) token表征",
+    "移动机器人局部避障",
+    "Nav2 costmap插件"
+  ],
+  "thesis_context": "Paper 1: 面向校园AMR的LiDAR-相机融合目标token，用于动态障碍物感知与局部避障闭环，经风险costmap接入Nav2",
+  "interest_keywords": [
+    "lidar-camera fusion",
+    "dynamic obstacle",
+    "object detection and tracking",
+    "trajectory prediction",
+    "costmap",
+    "local planner",
+    "mobile robot navigation"
+  ],
+  "relevance_threshold": 0.6,
+  "priority_keywords": [
+    "costmap",
+    "nav2",
+    "local planner",
+    "occupancy",
+    "slam"
+  ],
+  "priority_authors": [
+    "Wenshan Wang",
+    "Sebastian Scherer"
+  ],
+  "_note": "priority_keywords / priority_authors 是追踪预警Agent的'高优先信号'——当筛选Agent因相关性分数不达标而准备拒收一篇论文时，若该论文命中这些信号，追踪预警Agent会向编排Agent发起仲裁申诉，请求重新裁决，避免用户真正关注的方向被静默丢弃。这是本平台真正的'多Agent冲突协商'机制，而非顺序流水线。"
+}

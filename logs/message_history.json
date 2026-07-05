@@ -1,0 +1,192 @@
+[
+  {
+    "from": "编排Agent",
+    "to": "搜集Agent",
+    "task_type": "search",
+    "payload": {
+      "query": "lidar-camera fusion AND dynamic obstacle"
+    },
+    "status": "pending",
+    "ts": "14:35:59"
+  },
+  {
+    "from": "搜集Agent",
+    "to": "编排Agent",
+    "task_type": "search_result",
+    "payload": {
+      "count": 4
+    },
+    "status": "done",
+    "ts": "14:36:30"
+  },
+  {
+    "from": "编排Agent",
+    "to": "筛选去重Agent",
+    "task_type": "filter",
+    "payload": {
+      "count": 4
+    },
+    "status": "pending",
+    "ts": "14:36:30"
+  },
+  {
+    "from": "筛选去重Agent",
+    "to": "编排Agent",
+    "task_type": "filter_result",
+    "payload": {
+      "accepted": 3
+    },
+    "status": "done",
+    "ts": "14:38:35"
+  },
+  {
+    "from": "编排Agent",
+    "to": "翻译Agent",
+    "task_type": "translate",
+    "payload": {
+      "arxiv_id": "2504.13647"
+    },
+    "status": "pending",
+    "ts": "14:38:35"
+  },
+  {
+    "from": "翻译Agent",
+    "to": "编排Agent",
+    "task_type": "translate_result",
+    "payload": {
+      "arxiv_id": "2504.13647"
+    },
+    "status": "done",
+    "ts": "14:38:50"
+  },
+  {
+    "from": "编排Agent",
+    "to": "知识抽取Agent",
+    "task_type": "extract",
+    "payload": {
+      "arxiv_id": "2504.13647"
+    },
+    "status": "pending",
+    "ts": "14:38:50"
+  },
+  {
+    "from": "知识抽取Agent",
+    "to": "编排Agent",
+    "task_type": "extract_result",
+    "payload": {
+      "arxiv_id": "2504.13647"
+    },
+    "status": "done",
+    "ts": "14:39:02"
+  },
+  {
+    "from": "编排Agent",
+    "to": "追踪预警Agent",
+    "task_type": "notify",
+    "payload": {
+      "arxiv_id": "2504.13647"
+    },
+    "status": "pending",
+    "ts": "14:39:02"
+  },
+  {
+    "from": "编排Agent",
+    "to": "翻译Agent",
+    "task_type": "translate",
+    "payload": {
+      "arxiv_id": "2502.20607"
+    },
+    "status": "pending",
+    "ts": "14:39:02"
+  },
+  {
+    "from": "翻译Agent",
+    "to": "编排Agent",
+    "task_type": "translate_result",
+    "payload": {
+      "arxiv_id": "2502.20607"
+    },
+    "status": "done",
+    "ts": "14:39:12"
+  },
+  {
+    "from": "编排Agent",
+    "to": "知识抽取Agent",
+    "task_type": "extract",
+    "payload": {
+      "arxiv_id": "2502.20607"
+    },
+    "status": "pending",
+    "ts": "14:39:12"
+  },
+  {
+    "from": "知识抽取Agent",
+    "to": "编排Agent",
+    "task_type": "extract_result",
+    "payload": {
+      "arxiv_id": "2502.20607"
+    },
+    "status": "done",
+    "ts": "14:39:24"
+  },
+  {
+    "from": "编排Agent",
+    "to": "追踪预警Agent",
+    "task_type": "notify",
+    "payload": {
+      "arxiv_id": "2502.20607"
+    },
+    "status": "pending",
+    "ts": "14:39:24"
+  },
+  {
+    "from": "编排Agent",
+    "to": "翻译Agent",
+    "task_type": "translate",
+    "payload": {
+      "arxiv_id": "2502.01856"
+    },
+    "status": "pending",
+    "ts": "14:39:24"
+  },
+  {
+    "from": "翻译Agent",
+    "to": "编排Agent",
+    "task_type": "translate_result",
+    "payload": {
+      "arxiv_id": "2502.01856"
+    },
+    "status": "done",
+    "ts": "14:39:33"
+  },
+  {
+    "from": "编排Agent",
+    "to": "知识抽取Agent",
+    "task_type": "extract",
+    "payload": {
+      "arxiv_id": "2502.01856"
+    },
+    "status": "pending",
+    "ts": "14:39:33"
+  },
+  {
+    "from": "知识抽取Agent",
+    "to": "编排Agent",
+    "task_type": "extract_result",
+    "payload": {
+      "arxiv_id": "2502.01856"
+    },
+    "status": "done",
+    "ts": "14:39:42"
+  },
+  {
+    "from": "编排Agent",
+    "to": "追踪预警Agent",
+    "task_type": "notify",
+    "payload": {
+      "arxiv_id": "2502.01856"
+    },
+    "status": "pending",
+    "ts": "14:39:42"
+  }
+]

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}发现 · 论文管理多Agent平台{% endblock %}
+{% block content %}
+
+<div class="page-head">
+  <h1>发现新论文</h1>
+  <p>编排Agent调度全流程：检索 → 筛选去重 → （命中高优先信号时）仲裁 → 翻译 → 知识抽取 → 追踪预警。</p>
+</div>
+
+{% if not llm_live %}
+<div class="flash">当前为演示模式（未配置 DeepSeek Key）。到<a href="{{ url_for('settings_page') }}">设置</a>里填入 Key 后可用真实大模型。</div>
+{% endif %}
+
+<div class="row" style="align-items:stretch;">
+  <div class="card grow" style="margin-bottom:20px;">
+    <h2>按方向检索 arXiv</h2>
+    <form method="post" action="{{ url_for('run_search') }}">
+      <div class="field">
+        <label>研究方向关键词（多个用 AND 连接）</label>
+        <input type="text" name="query" value="{{ default_query }}" {{ 'disabled' if running else '' }}>
+      </div>
+      <button type="submit" {{ 'disabled' if running else '' }}>运行检索</button>
+    </form>
+    <div class="hint">若某篇被筛选Agent以“相关性不足”拒收、但命中你在设置里标注的高优先信号，追踪预警Agent会发起仲裁申诉。</div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px; min-width:300px;">
+    <h2>手动添加指定论文</h2>
+    <form method="post" action="{{ url_for('run_add') }}">
+      <div class="field">
+        <label>arXiv 编号或链接</label>
+        <input type="text" name="arxiv_id" placeholder="2502.20607" {{ 'disabled' if running else '' }}>
+      </div>
+      <button type="submit" {{ 'disabled' if running else '' }}>添加并处理</button>
+    </form>
+    <div class="hint">跳过相关性阈值，直接翻译 + 抽取入库。</div>
+  </div>
+</div>
+
+{% if job %}
+<div class="card">
+  <h2>运行进度 <span class="muted">{{ job.title }}</span></h2>
+  <div id="job" data-status="{{ job.status }}" data-job-id="{{ job.id }}">
+    <div class="job-panel">
+      <div class="job-status">
+        {% if job.status == 'running' %}<span class="spinner"></span> 编排Agent协作中……（真实调用大模型，请稍候）
+        {% elif job.status == 'error' %}<span style="color:var(--danger);">●</span> 运行中断：{{ job.error }}
+        {% else %}<span style="color:var(--ok);">●</span> 本轮完成{% endif %}
+      </div>
+      <pre class="log" id="job-log">{{ job.log }}</pre>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if result and result.arbitration %}
+<div class="card">
+  <h2>⚖ 本轮仲裁记录 <span class="muted">筛选Agent ↔ 追踪预警Agent 冲突裁决</span></h2>
+  {% for a in result.arbitration %}
+  <div style="border-left:3px solid {{ 'var(--ok)' if a.decision=='overturn' else 'var(--warn)' }};
+       background:{{ 'var(--ok-soft)' if a.decision=='overturn' else 'var(--warn-soft)' }};
+       border-radius:0 9px 9px 0; padding:9px 13px; margin-bottom:9px; font-size:12.5px;">
+    <strong>{{ '✔ 改判收录' if a.decision=='overturn' else '✘ 维持拒收' }}</strong>
+    · <a href="{{ url_for('paper_detail', arxiv_id=a.arxiv_id) }}">{{ a.arxiv_id }}</a> 《{{ a.title[:48] }}》<br>
+    <span style="color:var(--ink-soft);">编排Agent裁决：{{ a.rationale }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if result and result.notifications %}
+<div class="card">
+  <h2>本轮入库与推送 <span class="muted">{{ result.summary }}</span></h2>
+  {% for n in result.notifications %}
+  <div style="border:1px solid var(--accent-soft); background:var(--accent-soft);
+       border-radius:10px; padding:12px 14px; margin-bottom:10px;">
+    <div style="font-weight:600; font-size:13.5px;">
+      <a href="{{ url_for('paper_detail', arxiv_id=n.arxiv_id) }}" style="color:var(--accent-ink);">{{ n.title }}</a>
+      {% if n.via_arbitration %}<span class="badge-arb">经仲裁改判</span>{% endif %}
+    </div>
+    <div style="font-size:12px; color:var(--accent-ink); margin-top:3px;">相关性 {{ n.score }} · {{ n.reason }}</div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

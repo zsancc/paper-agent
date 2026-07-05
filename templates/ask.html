@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}问答 · 论文管理多Agent平台{% endblock %}
+{% block content %}
+
+<div class="page-head">
+  <h1>问我的文献库</h1>
+  <p>检索问答Agent 对你已收录的论文做检索增强问答（RAG），回答会标注引用了库里哪几篇。</p>
+</div>
+
+{% if not llm_live %}
+<div class="flash">当前为演示模式（未配置 DeepSeek Key），问答需要真实大模型。到<a href="{{ url_for('settings_page') }}">设置</a>里填入 Key。</div>
+{% endif %}
+
+<div class="card">
+  <form method="post" action="{{ url_for('run_ask') }}">
+    <div class="field">
+      <label>基于你的藏书提问（库里现有 {{ kb_count }} 篇）</label>
+      <textarea name="question" placeholder="例如：库里的方法都怎么处理动态障碍物的遮挡问题？多传感器融合是主流吗？" {{ 'disabled' if running else '' }}></textarea>
+    </div>
+    <button type="submit" {{ 'disabled' if running else '' }}>提问</button>
+    <div class="hint">召回按与问题的相关度取回最相关的若干篇论文喂给大模型；语义向量检索为后续升级方向。</div>
+  </form>
+
+  {% if job %}
+  <div id="job" data-status="{{ job.status }}" data-job-id="{{ job.id }}">
+    <div class="job-panel">
+      <div class="job-status">
+        {% if job.status == 'running' %}<span class="spinner"></span> 检索问答Agent 正在召回并生成回答……
+        {% elif job.status == 'error' %}<span style="color:var(--danger);">●</span> 出错：{{ job.error }}
+        {% else %}<span style="color:var(--ok);">●</span> 已生成{% endif %}
+      </div>
+      <pre class="log" id="job-log">{{ job.log }}</pre>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+{% for qa in history %}
+<div class="card">
+  <div style="font-weight:600; margin-bottom:12px; font-size:14px;">
+    <span style="color:var(--accent);">问：</span>{{ qa.question }}
+  </div>
+  <div style="white-space:pre-wrap; font-size:14px; line-height:1.85;">{{ qa.answer }}</div>
+  {% if qa.citations %}
+  <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--line);">
+    <span style="font-size:12px; color:var(--ink-soft);">引用论文：</span><br>
+    {% for c in qa.citations %}
+    <a href="{{ url_for('paper_detail', arxiv_id=c.arxiv_id) }}"
+       style="display:inline-block; font-size:12px; border:1px solid var(--accent-soft);
+       border-radius:7px; padding:3px 10px; margin:6px 6px 0 0;">[{{ c.arxiv_id }}] {{ c.title[:38] }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endfor %}
+
+{% endblock %}

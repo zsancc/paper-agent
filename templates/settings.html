@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}设置 · 论文管理多Agent平台{% endblock %}
+{% block content %}
+
+<div class="page-head">
+  <h1>设置</h1>
+  <p>这里的配置会持久保存到本机文件，下次开面板自动生效。</p>
+</div>
+
+<div class="card">
+  <h2>大模型（LLM）</h2>
+  <form method="post" action="{{ url_for('save_llm') }}">
+    <div class="field">
+      <label>DeepSeek API Key {% if has_key %}<span class="chip chip-ok" style="margin-left:6px;">已保存</span>{% endif %}</label>
+      <input type="password" name="deepseek_key" placeholder="{{ '········（已保存，留空则不改动）' if has_key else 'sk-...' }}">
+    </div>
+    <div class="field" style="max-width:280px;">
+      <label>模型</label>
+      <select name="deepseek_model">
+        <option value="deepseek-v4-pro" {{ 'selected' if model=='deepseek-v4-pro' else '' }}>deepseek-v4-pro</option>
+        <option value="deepseek-chat" {{ 'selected' if model=='deepseek-chat' else '' }}>deepseek-chat</option>
+        <option value="deepseek-reasoner" {{ 'selected' if model=='deepseek-reasoner' else '' }}>deepseek-reasoner</option>
+      </select>
+    </div>
+    <button type="submit">保存 LLM 设置</button>
+    <div class="hint">保存到本机 <code>data/settings.local.json</code>（明文，仅本机使用，请勿分享该文件）。当前状态：{{ ('已启用真实调用 · ' + (provider or '')) if llm_live else '演示模式（未配置 Key）' }}。</div>
+  </form>
+</div>
+
+<div class="card">
+  <h2>研究画像 <span class="muted">驱动筛选Agent的相关性判断与仲裁触发</span></h2>
+  <form method="post" action="{{ url_for('save_profile') }}">
+    <div class="field">
+      <label>兴趣关键词（每行或逗号分隔一个）—— 决定“相关性”</label>
+      <textarea name="interest_keywords">{{ interest_keywords }}</textarea>
+    </div>
+    <div class="row">
+      <div class="grow field">
+        <label>高优先关键词 —— 命中则即便被拒收也会触发仲裁申诉</label>
+        <textarea name="priority_keywords">{{ priority_keywords }}</textarea>
+      </div>
+      <div class="grow field">
+        <label>关注学者 —— 论文作者命中则触发仲裁申诉</label>
+        <textarea name="priority_authors">{{ priority_authors }}</textarea>
+      </div>
+    </div>
+    <div class="field" style="max-width:220px;">
+      <label>相关性阈值（0–1，低于则初判拒收）</label>
+      <input type="number" name="relevance_threshold" step="0.05" min="0" max="1" value="{{ relevance_threshold }}">
+    </div>
+    <button type="submit">保存研究画像</button>
+    <div class="hint">保存到 <code>data/user_profile.json</code>。修改高优先关键词后，检索时命中这些词的被拒论文就会进入仲裁流程。</div>
+  </form>
+</div>
+
+<div class="card">
+  <h2>数据</h2>
+  <form method="post" action="{{ url_for('reset') }}" onsubmit="return confirm('确定清空整个文献库？此操作不可撤销。');">
+    <button type="submit" class="btn-danger">清空文献库</button>
+    <div class="hint">删除所有已收录论文（用于重新演示）。不影响你的 LLM 设置与研究画像。</div>
+  </form>
+</div>
+
+{% endblock %}

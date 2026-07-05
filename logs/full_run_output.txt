@@ -1,0 +1,96 @@
+搜集Agent 模式: LIVE（真实arXiv检索，stdlib直连）
+LLM 调用模式: LIVE（deepseek）
+
+[14:35:59] [编排Agent] ============================================================
+[14:35:59] [编排Agent] 定时任务触发：开始处理研究方向 「lidar-camera fusion AND dynamic obstacle」
+[14:35:59] [编排Agent] ============================================================
+[14:35:59] [搜集Agent] [LIVE模式] 正在检索 arXiv (stdlib urllib，无第三方依赖): query='all:"lidar-camera fusion" AND all:"dynamic obstacle"'
+[14:36:03] [搜集Agent] [LIVE模式] 网络异常(HTTPError)，5秒后重试一次
+[14:36:30] [搜集Agent] [LIVE模式异常] TimeoutError: The read operation timed out，降级使用本地示例候选集
+[14:36:30] [搜集Agent] [DEMO模式] 改为读取本地示例候选集: E:\program\软件体系作业\paper_agent\agents\..\data\mock_candidates.json
+[14:36:30] [搜集Agent] 命中 4 篇候选论文（本地预置示例）
+[14:37:30]   [LIVE-DeepSeek] 网络异常(ReadTimeout)，2秒后重试 (1/3)
+[14:37:37]   [LIVE-DeepSeek] 网络异常(SSLError)，4秒后重试 (2/3)
+[14:37:53]   [LIVE-DeepSeek:deepseek-v4-pro] LLM(relevance) 对 2504.13647 返回真实模型输出
+[14:37:53] [筛选去重Agent] [相关性判断] 2504.13647 《An Efficient LiDAR-Camera Fusi...》 score=0.95 relevant=True
+[14:37:53] [筛选去重Agent]     理由: 论文研究LiDAR-相机融合的动态物体检测与轨迹预测，直接匹配用户研究方向中的多个关键词。
+[14:38:12]   [LIVE-DeepSeek] 网络异常(ProxyError)，2秒后重试 (1/3)
+[14:38:23]   [LIVE-DeepSeek:deepseek-v4-pro] LLM(relevance) 对 2502.20607 返回真实模型输出
+[14:38:23] [筛选去重Agent] [相关性判断] 2502.20607 《LV-DOT: LiDAR-Visual Dynamic O...》 score=0.95 relevant=True
+[14:38:23] [筛选去重Agent]     理由: 论文提出激光雷达-视觉融合框架用于动态障碍物检测与跟踪，直接匹配用户研究方向。
+[14:38:30]   [LIVE-DeepSeek:deepseek-v4-pro] LLM(relevance) 对 2502.01856 返回真实模型输出
+[14:38:30] [筛选去重Agent] [相关性判断] 2502.01856 《Reliability-Driven LiDAR-Camer...》 score=0.9 relevant=True
+[14:38:30] [筛选去重Agent]     理由: 直接研究激光雷达-相机融合的鲁棒3D目标检测，与lidar-camera fusion和object detection高度相关
+[14:38:35]   [LIVE-DeepSeek:deepseek-v4-pro] LLM(relevance) 对 2505.08388 返回真实模型输出
+[14:38:35] [筛选去重Agent] [相关性判断] 2505.08388 《MDF: Multi-Modal Data Fusion w...》 score=0.2 relevant=False
+[14:38:35] [筛选去重Agent]     理由: 论文侧重于静态地图定位，不涉及动态障碍物检测与避让，与用户研究方向关联度低。
+[14:38:35] [筛选去重Agent]     → 未达阈值(0.6)，不收录
+[14:38:35] [筛选去重Agent] 本轮筛选完成：3/4 篇通过
+[14:38:35] [编排Agent] --- 处理论文 2504.13647 ---
+[14:38:35] [翻译Agent] 处理 2504.13647：PDF→MD 结构化（原型阶段对摘要生效）
+[14:38:50]   [LIVE-DeepSeek:deepseek-v4-pro] LLM(translate) 对 2504.13647 返回真实模型输出
+[14:38:50] [翻译Agent] 生成双语MD完成：2504.13647.md / 2504.13647.zh.md
+[14:39:02]   [LIVE-DeepSeek:deepseek-v4-pro] LLM(extract) 对 2504.13647 返回真实模型输出
+[14:39:02] [知识抽取Agent] 提炼结构化摘要完成: 2504.13647
+[14:39:02] [知识抽取Agent]     motivation: 实现多类3D动态目标检测与轨迹预测。...
+[14:39:02] [知识抽取Agent]     method: 提出了一种激光雷达-相机融合网络，用于多类3D动态目标检测与轨迹预测。...
+[14:39:02] [知识抽取Agent]     result: 展示了实际部署的强大泛化能力。...
+[14:39:02] [知识抽取Agent] 已写入知识库: 2504.13647
+[14:39:02] [追踪预警Agent] 检测到新入库论文匹配关注方向: 2504.13647 (score=0.95)
+[14:39:02] [追踪预警Agent] [推送通知] 《An Efficient LiDAR-Camera Fusion Network...》 已推送给用户
+[14:39:02] [追踪预警Agent]     一句话理由: 论文研究LiDAR-相机融合的动态物体检测与轨迹预测，直接匹配用户研究方向中的多个关键词。
+[14:39:02] [编排Agent] --- 处理论文 2502.20607 ---
+[14:39:02] [翻译Agent] 处理 2502.20607：PDF→MD 结构化（原型阶段对摘要生效）
+[14:39:12]   [LIVE-DeepSeek:deepseek-v4-pro] LLM(translate) 对 2502.20607 返回真实模型输出
+[14:39:12] [翻译Agent] 生成双语MD完成：2502.20607.md / 2502.20607.zh.md
+[14:39:24]   [LIVE-DeepSeek:deepseek-v4-pro] LLM(extract) 对 2502.20607 返回真实模型输出
+[14:39:24] [知识抽取Agent] 提炼结构化摘要完成: 2502.20607
+[14:39:24] [知识抽取Agent]     motivation: 提高自主移动机器人导航中对动态障碍物的识别能力...
+[14:39:24] [知识抽取Agent]     method: 提出轻量级LiDAR-视觉融合框架，结合LiDAR深度精度和相机视觉特征...
+[14:39:24] [知识抽取Agent]     result: 未提及...
+[14:39:24] [知识抽取Agent] 已写入知识库: 2502.20607
+[14:39:24] [追踪预警Agent] 检测到新入库论文匹配关注方向: 2502.20607 (score=0.95)
+[14:39:24] [追踪预警Agent] [推送通知] 《LV-DOT: LiDAR-Visual Dynamic Obstacle De...》 已推送给用户
+[14:39:24] [追踪预警Agent]     一句话理由: 论文提出激光雷达-视觉融合框架用于动态障碍物检测与跟踪，直接匹配用户研究方向。
+[14:39:24] [编排Agent] --- 处理论文 2502.01856 ---
+[14:39:24] [翻译Agent] 处理 2502.01856：PDF→MD 结构化（原型阶段对摘要生效）
+[14:39:33]   [LIVE-DeepSeek:deepseek-v4-pro] LLM(translate) 对 2502.01856 返回真实模型输出
+[14:39:33] [翻译Agent] 生成双语MD完成：2502.01856.md / 2502.01856.zh.md
+[14:39:42]   [LIVE-DeepSeek:deepseek-v4-pro] LLM(extract) 对 2502.01856 返回真实模型输出
+[14:39:42] [知识抽取Agent] 提炼结构化摘要完成: 2502.01856
+[14:39:42] [知识抽取Agent]     motivation: 解决在LiDAR遮挡或相机失效等传感器故障场景下3D检测性能下降的问题。...
+[14:39:42] [知识抽取Agent]     method: 提出ReliFusion融合方法以保持鲁棒检测。...
+[14:39:42] [知识抽取Agent]     result: 实验表明ReliFusion能在传感器故障下保持鲁棒性能。...
+[14:39:42] [知识抽取Agent] 已写入知识库: 2502.01856
+[14:39:42] [追踪预警Agent] 检测到新入库论文匹配关注方向: 2502.01856 (score=0.9)
+[14:39:42] [追踪预警Agent] [推送通知] 《Reliability-Driven LiDAR-Camera Fusion f...》 已推送给用户
+[14:39:42] [追踪预警Agent]     一句话理由: 直接研究激光雷达-相机融合的鲁棒3D目标检测，与lidar-camera fusion和object detection高度相关
+[14:39:42] [编排Agent] ============================================================
+[14:39:42] [编排Agent] 本轮流程结束，共处理 3 篇新论文，消息总线共记录 19 条协作消息
+[14:39:42] [编排Agent] ============================================================
+
+############################################################
+# 本轮推送给用户的通知汇总
+############################################################
+
+【An Efficient LiDAR-Camera Fusion Network for Multi-Class 3D Dynamic Object Detection and Trajectory Prediction】
+  相关性: 0.95  理由: 论文研究LiDAR-相机融合的动态物体检测与轨迹预测，直接匹配用户研究方向中的多个关键词。
+  核心结果: 展示了实际部署的强大泛化能力。
+
+【LV-DOT: LiDAR-Visual Dynamic Obstacle Detection and Tracking for Autonomous Robot Navigation】
+  相关性: 0.95  理由: 论文提出激光雷达-视觉融合框架用于动态障碍物检测与跟踪，直接匹配用户研究方向。
+  核心结果: 未提及
+
+【Reliability-Driven LiDAR-Camera Fusion for Robust 3D Object Detection】
+  相关性: 0.9  理由: 直接研究激光雷达-相机融合的鲁棒3D目标检测，与lidar-camera fusion和object detection高度相关
+  核心结果: 实验表明ReliFusion能在传感器故障下保持鲁棒性能。
+
+############################################################
+# 知识库当前状态
+############################################################
+  2504.13647 | processed  | score=0.95 | An Efficient LiDAR-Camera Fusion Network for Multi
+  2502.20607 | processed  | score=0.95 | LV-DOT: LiDAR-Visual Dynamic Obstacle Detection an
+  2502.01856 | processed  | score=0.9 | Reliability-Driven LiDAR-Camera Fusion for Robust 
+  2505.08388 | rejected   | score=0.2 | MDF: Multi-Modal Data Fusion with CNN-Based Object
+
+完整消息总线日志已保存到: E:\program\软件体系作业\paper_agent\logs\message_history.json

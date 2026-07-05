@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}文献库 · 论文管理多Agent平台{% endblock %}
+{% block content %}
+
+<div class="page-head">
+  <h1>我的文献库</h1>
+  <p>由知识抽取Agent沉淀的结构化藏书。点标题看中文翻译与结构化摘要，支持库内检索与删除。</p>
+</div>
+
+<div class="card">
+  <div style="display:flex; gap:18px; flex-wrap:wrap; margin-bottom:6px;">
+    <div><div class="num" style="font-size:24px; font-weight:700;">{{ stats.total }}</div><div class="hint" style="margin:0;">藏书总数</div></div>
+    <div><div class="num" style="font-size:24px; font-weight:700; color:var(--ok);">{{ stats.direct }}</div><div class="hint" style="margin:0;">相关性直接收录</div></div>
+    <div><div class="num" style="font-size:24px; font-weight:700; color:var(--warn);">{{ stats.arbitrated }}</div><div class="hint" style="margin:0;">经仲裁改判收录</div></div>
+    <div><div class="num" style="font-size:24px; font-weight:700; color:var(--accent);">{{ stats.manual }}</div><div class="hint" style="margin:0;">手动添加</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <form method="get" action="{{ url_for('library') }}" class="row" style="margin-bottom:16px;">
+    <div class="grow">
+      <input type="text" name="kw" placeholder="库内关键词检索（标题 / 摘要 / 中文摘要 / 结构化要点）" value="{{ kw or '' }}">
+    </div>
+    <button type="submit">检索</button>
+    {% if kw %}<a class="btn btn-ghost" href="{{ url_for('library') }}">清除</a>{% endif %}
+  </form>
+
+  {% if papers %}
+  <table>
+    <thead><tr><th>标题</th><th>arXiv</th><th>状态</th><th>相关性</th><th>核心结果</th><th></th></tr></thead>
+    <tbody>
+    {% for p in papers %}
+    <tr>
+      <td style="max-width:360px;"><a class="title-link" href="{{ url_for('paper_detail', arxiv_id=p.arxiv_id) }}">{{ p.title }}</a></td>
+      <td class="num" style="color:var(--ink-soft); font-size:12px;">{{ p.arxiv_id }}</td>
+      <td>
+        {% if p.status == 'processed' %}<span class="chip chip-ok">已入库</span>
+        {% elif p.status == 'manually_added' %}<span class="chip chip-manual">手动添加</span>
+        {% elif p.status == 'rejected' %}<span class="chip chip-neutral">已拒收</span>
+        {% else %}<span class="chip chip-neutral">{{ p.status }}</span>{% endif %}
+        {% if p.via_arbitration %}<span class="badge-arb">经仲裁</span>{% endif %}
+      </td>
+      <td class="num">{{ '%.2f'|format(p.score) if p.score is not none else '—' }}</td>
+      <td style="max-width:280px; color:var(--ink-soft); font-size:12.5px;">{{ (p.summary.result if p.summary else '') or '—' }}</td>
+      <td>
+        <form method="post" action="{{ url_for('delete') }}" onsubmit="return confirm('从文献库删除这篇？');" style="margin:0;">
+          <input type="hidden" name="arxiv_id" value="{{ p.arxiv_id }}">
+          <button type="submit" class="btn-danger btn-tiny">删除</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <div class="empty">
+      {% if kw %}没有匹配「{{ kw }}」的论文。{% else %}文献库还是空的。去<a href="{{ url_for('discover') }}">「发现」</a>检索一批论文，或手动添加一篇。{% endif %}
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

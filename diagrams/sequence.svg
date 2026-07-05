@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 660" font-family="Microsoft YaHei, PingFang SC, sans-serif">
+  <defs>
+    <marker id="req" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#B5651D"/>
+    </marker>
+    <marker id="ret" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4A5568"/>
+    </marker>
+    <marker id="evt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9A6A0B"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1360" height="660" fill="#ffffff"/>
+  <text x="680" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="#1E293B">协作时序图：一次检索中的“拒收 → 仲裁申诉 → 改判收录”冲突协商</text>
+
+  <!-- highlight band for arbitration -->
+  <rect x="30" y="292" width="1300" height="150" fill="#FBEFD3" opacity="0.55"/>
+  <text x="40" y="308" font-size="11.5" font-weight="700" fill="#7A430F">▼ 事件驱动的冲突仲裁区（顺序流水线无法产生这段协商）</text>
+
+  <!-- lifelines -->
+  <g font-size="12" font-weight="700">
+    <g><rect x="12" y="42" width="116" height="32" rx="6" fill="#EBEDF1" stroke="#4A5568"/><text x="70" y="63" text-anchor="middle" fill="#1E293B">用户</text></g>
+    <g><rect x="162" y="42" width="116" height="32" rx="6" fill="#FBEAD3" stroke="#B5651D"/><text x="220" y="63" text-anchor="middle" fill="#5A2E0C">编排Agent</text></g>
+    <g><rect x="322" y="42" width="116" height="32" rx="6" fill="#FBEAD3" stroke="#B5651D"/><text x="380" y="63" text-anchor="middle" fill="#5A2E0C">搜集Agent</text></g>
+    <g><rect x="496" y="42" width="128" height="32" rx="6" fill="#FBEAD3" stroke="#B5651D"/><text x="560" y="63" text-anchor="middle" fill="#5A2E0C">筛选去重Agent</text></g>
+    <g><rect x="682" y="42" width="116" height="32" rx="6" fill="#FBEFD3" stroke="#9A6A0B"/><text x="740" y="63" text-anchor="middle" fill="#7A430F">事件总线</text></g>
+    <g><rect x="850" y="42" width="128" height="32" rx="6" fill="#FBEAD3" stroke="#B5651D"/><text x="914" y="63" text-anchor="middle" fill="#5A2E0C">追踪预警Agent</text></g>
+    <g><rect x="1030" y="42" width="128" height="32" rx="6" fill="#FBEAD3" stroke="#B5651D"/><text x="1094" y="63" text-anchor="middle" fill="#5A2E0C">翻译+抽取Agent</text></g>
+    <g><rect x="1210" y="42" width="120" height="32" rx="6" fill="#EBEDF1" stroke="#4A5568"/><text x="1270" y="63" text-anchor="middle" fill="#1E293B">LLM(DeepSeek)</text></g>
+  </g>
+  <g stroke="#94A3B8" stroke-width="1.1" stroke-dasharray="4,3">
+    <line x1="70" y1="74" x2="70" y2="600"/>
+    <line x1="220" y1="74" x2="220" y2="600"/>
+    <line x1="380" y1="74" x2="380" y2="600"/>
+    <line x1="560" y1="74" x2="560" y2="600"/>
+    <line x1="740" y1="74" x2="740" y2="600"/>
+    <line x1="914" y1="74" x2="914" y2="600"/>
+    <line x1="1094" y1="74" x2="1094" y2="600"/>
+    <line x1="1270" y1="74" x2="1270" y2="600"/>
+  </g>
+
+  <g font-size="11.5" fill="#1E293B">
+    <!-- 1 user trigger -->
+    <line x1="70" y1="104" x2="220" y2="104" stroke="#B5651D" stroke-width="1.5" marker-end="url(#req)"/>
+    <text x="145" y="98" text-anchor="middle">①触发检索</text>
+    <!-- 2 search -->
+    <line x1="220" y1="132" x2="380" y2="132" stroke="#B5651D" stroke-width="1.5" marker-end="url(#req)"/>
+    <text x="300" y="126" text-anchor="middle">②search</text>
+    <!-- 3 candidates -->
+    <line x1="380" y1="158" x2="220" y2="158" stroke="#4A5568" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ret)"/>
+    <text x="300" y="152" text-anchor="middle">③候选论文列表</text>
+    <!-- 4 filter -->
+    <line x1="220" y1="186" x2="560" y2="186" stroke="#B5651D" stroke-width="1.5" marker-end="url(#req)"/>
+    <text x="390" y="180" text-anchor="middle">④判断相关性并去重</text>
+    <!-- 5 relevance LLM -->
+    <line x1="560" y1="212" x2="1270" y2="212" stroke="#B5651D" stroke-width="1.3" marker-end="url(#req)"/>
+    <text x="880" y="206" text-anchor="middle">⑤relevance 判断</text>
+    <line x1="1270" y1="236" x2="560" y2="236" stroke="#4A5568" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#ret)"/>
+    <text x="900" y="230" text-anchor="middle">⑥score=0.1，判定不相关 → 初判拒收</text>
+
+    <!-- 7 publish rejected (event, into bus) -->
+    <line x1="560" y1="322" x2="740" y2="322" stroke="#9A6A0B" stroke-width="1.7" marker-end="url(#evt)"/>
+    <text x="650" y="316" text-anchor="middle" fill="#7A430F">⑦publish</text>
+    <text x="650" y="336" text-anchor="middle" fill="#7A430F" font-weight="700">paper.rejected</text>
+    <!-- 8 bus dispatch to watcher -->
+    <line x1="740" y1="360" x2="914" y2="360" stroke="#9A6A0B" stroke-width="1.7" marker-end="url(#evt)"/>
+    <text x="827" y="354" text-anchor="middle" fill="#7A430F">⑧派发事件</text>
+    <!-- 9 watcher note + publish arbitration.requested back to bus -->
+    <line x1="914" y1="392" x2="740" y2="392" stroke="#9A6A0B" stroke-width="1.7" marker-end="url(#evt)"/>
+    <text x="827" y="386" text-anchor="middle" fill="#7A430F">⑨命中优先信号，publish</text>
+    <text x="827" y="406" text-anchor="middle" fill="#7A430F" font-weight="700">arbitration.requested</text>
+    <!-- 10 bus dispatch to orchestrator -->
+    <line x1="740" y1="430" x2="220" y2="430" stroke="#9A6A0B" stroke-width="1.7" marker-end="url(#evt)"/>
+    <text x="470" y="424" text-anchor="middle" fill="#7A430F">⑩派发仲裁申诉给编排Agent</text>
+
+    <!-- 11 orchestrator asks LLM arbitrate -->
+    <line x1="220" y1="466" x2="1270" y2="466" stroke="#B5651D" stroke-width="1.3" marker-end="url(#req)"/>
+    <text x="720" y="460" text-anchor="middle">⑪arbitrate：从“参考价值”视角二次裁决</text>
+    <line x1="1270" y1="490" x2="220" y2="490" stroke="#4A5568" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#ret)"/>
+    <text x="720" y="484" text-anchor="middle">⑫admit=true → 改判收录（admitted_by_arbitration）</text>
+
+    <!-- 12 pipeline translate+extract -->
+    <line x1="220" y1="520" x2="1094" y2="520" stroke="#B5651D" stroke-width="1.5" marker-end="url(#req)"/>
+    <text x="640" y="514" text-anchor="middle">⑬translate + extract（翻译并抽取结构化摘要，写入知识库）</text>
+    <line x1="1094" y1="544" x2="220" y2="544" stroke="#4A5568" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ret)"/>
+    <text x="640" y="538" text-anchor="middle">⑭完成</text>
+
+    <!-- 13 notify user -->
+    <line x1="220" y1="572" x2="914" y2="572" stroke="#B5651D" stroke-width="1.5" marker-end="url(#req)"/>
+    <text x="560" y="566" text-anchor="middle">⑮notify</text>
+    <line x1="914" y1="596" x2="70" y2="596" stroke="#B5651D" stroke-width="1.5" marker-end="url(#req)"/>
+    <text x="480" y="590" text-anchor="middle">⑯推送“经仲裁改判收录”通知给用户</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="11.5" fill="#475569">
+    <line x1="40" y1="628" x2="72" y2="628" stroke="#B5651D" stroke-width="1.5" marker-end="url(#req)"/>
+    <text x="78" y="632">请求</text>
+    <line x1="140" y1="628" x2="172" y2="628" stroke="#4A5568" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ret)"/>
+    <text x="178" y="632">返回</text>
+    <line x1="240" y1="628" x2="272" y2="628" stroke="#9A6A0B" stroke-width="1.7" marker-end="url(#evt)"/>
+    <text x="278" y="632">总线事件（发布/订阅，发布方不知谁在监听）</text>
+    <text x="760" y="632">注：若⑫裁决为 admit=false，则维持拒收、标记待人工复核（仲裁的另一分支）。</text>
+  </g>
+</svg>

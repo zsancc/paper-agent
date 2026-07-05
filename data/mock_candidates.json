@@ -1,0 +1,34 @@
+[
+  {
+    "arxiv_id": "2504.13647",
+    "title": "An Efficient LiDAR-Camera Fusion Network for Multi-Class 3D Dynamic Object Detection and Trajectory Prediction",
+    "authors": ["Yushen He", "et al."],
+    "abstract": "Proposes a LiDAR-camera fusion network for multi-class 3D dynamic object detection combined with trajectory prediction. Evaluated on the CODa benchmark and nuScenes, and deployed in real time (13.9 FPS) on a wheelchair robot with an entry-level RTX 3060 GPU, showing strong generalizability for practical deployment.",
+    "published": "2025-04-18",
+    "source": "arXiv"
+  },
+  {
+    "arxiv_id": "2502.20607",
+    "title": "LV-DOT: LiDAR-Visual Dynamic Obstacle Detection and Tracking for Autonomous Robot Navigation",
+    "authors": ["et al."],
+    "abstract": "Presents a lightweight LiDAR-visual fusion framework for dynamic obstacle detection and tracking on autonomous mobile robots, combining LiDAR's wide-range depth accuracy with camera's rich visual features to improve identification of moving obstacles for navigation.",
+    "published": "2025-02-28",
+    "source": "arXiv"
+  },
+  {
+    "arxiv_id": "2502.01856",
+    "title": "Reliability-Driven LiDAR-Camera Fusion for Robust 3D Object Detection",
+    "authors": ["et al."],
+    "abstract": "Introduces ReliFusion, a fusion approach aimed at maintaining robust 3D detection performance under sensor malfunction scenarios such as LiDAR occlusion or camera failure, evaluated with controlled corruption experiments.",
+    "published": "2025-02-01",
+    "source": "arXiv"
+  },
+  {
+    "arxiv_id": "2505.08388",
+    "title": "MDF: Multi-Modal Data Fusion with CNN-Based Object Detection for Enhanced Indoor Localization Using LiDAR-SLAM",
+    "authors": ["et al."],
+    "abstract": "Combines CNN-based object detection with LiDAR-SLAM for indoor localization accuracy improvement, focusing on static-map-oriented localization rather than dynamic obstacle avoidance.",
+    "published": "2025-05-12",
+    "source": "arXiv"
+  }
+]

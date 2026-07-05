@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ p.title[:30] if p else '未找到' }} · 论文详情{% endblock %}
+{% block content %}
+
+<div style="margin-bottom:6px;"><a href="{{ url_for('library') }}" style="font-size:13px; color:var(--ink-soft);">← 返回文献库</a></div>
+
+{% if not p %}
+<div class="card"><div class="empty">未找到这篇论文，可能已被删除。</div></div>
+{% else %}
+
+<div class="page-head">
+  <h1 style="line-height:1.35;">{{ p.title }}</h1>
+  <p>
+    {{ p.arxiv_id }} · {{ p.published or '发表日期未知' }} · {{ (p.authors|join(', ')) if p.authors else '作者未知' }}
+    {% if p.pdf_url %} · <a href="{{ p.pdf_url }}" target="_blank">查看 PDF ↗</a>{% endif %}
+    {% if p.via_arbitration %}<span class="badge-arb">经仲裁改判收录</span>{% endif %}
+  </p>
+</div>
+
+<div class="card">
+  <h2>筛选去重Agent · 相关性判断</h2>
+  <p style="margin:0;">相关性得分：<strong class="num">{{ '%.2f'|format(p.score) if p.score is not none else '—' }}</strong></p>
+  <p style="margin:8px 0 0; color:var(--ink-soft);">{{ p.relevance_reason or '（无相关性判断记录）' }}</p>
+</div>
+
+<div class="card">
+  <h2>翻译Agent · 中文摘要</h2>
+  {% if p.zh_abstract %}<p style="margin:0; line-height:1.85;">{{ p.zh_abstract }}</p>
+  {% else %}<div class="empty">尚未生成翻译。</div>{% endif %}
+</div>
+
+<div class="card">
+  <h2>知识抽取Agent · 结构化摘要</h2>
+  {% if p.summary %}
+  {% for label, key in [('研究动机','motivation'),('方法','method'),('实验设置','experiment'),('核心结果','result'),('局限性','limitation')] %}
+  <div style="display:grid; grid-template-columns:96px 1fr; gap:6px 14px; margin-bottom:10px; line-height:1.65;">
+    <span style="color:var(--ink-soft);">{{ label }}</span><span>{{ p.summary[key] or '—' }}</span>
+  </div>
+  {% endfor %}
+  {% else %}<div class="empty">尚未生成结构化摘要。</div>{% endif %}
+</div>
+
+<div class="card">
+  <h2>原文摘要（英文）</h2>
+  <p style="margin:0; line-height:1.8; color:var(--ink-soft);">{{ p.abstract }}</p>
+</div>
+{% endif %}
+
+{% endblock %}

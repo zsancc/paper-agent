@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 940" font-family="Microsoft YaHei, PingFang SC, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748B"/>
+    </marker>
+    <marker id="evt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9A6A0B"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1240" height="940" fill="#ffffff"/>
+  <text x="620" y="32" text-anchor="middle" font-size="21" font-weight="700" fill="#1E293B">论文管理多Agent平台 —— 整体架构（六层，六个领域Agent）</text>
+
+  <!-- L1 交互层 -->
+  <rect x="330" y="52" width="580" height="56" rx="10" fill="#EEF1F6" stroke="#4A5568" stroke-width="1.5"/>
+  <text x="350" y="72" font-size="12" fill="#4A5568" font-weight="700">L1 · 交互层</text>
+  <text x="620" y="92" text-anchor="middle" font-size="13.5" fill="#1E293B">多页面 Web 应用（文献库 / 发现 / 问答 / 设置）· 后台任务实时进度</text>
+  <line x1="620" y1="108" x2="620" y2="130" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- L2 编排层 -->
+  <rect x="330" y="132" width="580" height="56" rx="10" fill="#FBEAD3" stroke="#B5651D" stroke-width="1.5"/>
+  <text x="350" y="152" font-size="12" fill="#7A430F" font-weight="700">L2 · 编排 / 调度层</text>
+  <text x="620" y="172" text-anchor="middle" font-size="13.5" fill="#5A2E0C">编排Agent（Coordinator）：任务DAG派发 + 事件订阅 + 冲突仲裁裁决</text>
+  <line x1="620" y1="188" x2="620" y2="210" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- L3 领域Agent层 -->
+  <rect x="28" y="212" width="1184" height="150" rx="12" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="44" y="232" font-size="12" fill="#475569" font-weight="700">L3 · 领域Agent层（编排Agent统一调度，Agent间通过 L4 事件总线解耦协作，非顺序流水线）</text>
+
+  <g font-size="12.5">
+    <!-- 6 agents -->
+    <g>
+      <rect x="40" y="244" width="182" height="106" rx="8" fill="#FBEAD3" stroke="#B5651D" stroke-width="1.4"/>
+      <text x="131" y="268" text-anchor="middle" font-weight="700" fill="#5A2E0C">搜集Agent</text>
+      <text x="131" y="290" text-anchor="middle" font-size="11" fill="#5A2E0C">arXiv 实时检索</text>
+      <text x="131" y="308" text-anchor="middle" font-size="11" fill="#5A2E0C">按编号单篇拉取</text>
+      <text x="131" y="326" text-anchor="middle" font-size="11" fill="#5A2E0C">异常自动降级</text>
+    </g>
+    <g>
+      <rect x="232" y="244" width="182" height="106" rx="8" fill="#FBEAD3" stroke="#B5651D" stroke-width="1.4"/>
+      <text x="323" y="268" text-anchor="middle" font-weight="700" fill="#5A2E0C">筛选去重Agent</text>
+      <text x="323" y="290" text-anchor="middle" font-size="11" fill="#5A2E0C">规则去重(查主键)</text>
+      <text x="323" y="308" text-anchor="middle" font-size="11" fill="#5A2E0C">+ LLM相关性判断</text>
+      <text x="323" y="326" text-anchor="middle" font-size="11" fill="#5A2E0C">拒收→发事件</text>
+    </g>
+    <g>
+      <rect x="424" y="244" width="182" height="106" rx="8" fill="#FBEAD3" stroke="#B5651D" stroke-width="1.4"/>
+      <text x="515" y="268" text-anchor="middle" font-weight="700" fill="#5A2E0C">翻译Agent</text>
+      <text x="515" y="290" text-anchor="middle" font-size="11" fill="#5A2E0C">摘要→中文</text>
+      <text x="515" y="308" text-anchor="middle" font-size="11" fill="#5A2E0C">双语对照MD</text>
+      <text x="515" y="326" text-anchor="middle" font-size="11" fill="#5A2E0C">LLM 翻译</text>
+    </g>
+    <g>
+      <rect x="616" y="244" width="182" height="106" rx="8" fill="#FBEAD3" stroke="#B5651D" stroke-width="1.4"/>
+      <text x="707" y="268" text-anchor="middle" font-weight="700" fill="#5A2E0C">知识抽取Agent</text>
+      <text x="707" y="290" text-anchor="middle" font-size="11" fill="#5A2E0C">动机/方法/实验</text>
+      <text x="707" y="308" text-anchor="middle" font-size="11" fill="#5A2E0C">/结果/局限性</text>
+      <text x="707" y="326" text-anchor="middle" font-size="11" fill="#5A2E0C">统一schema入库</text>
+    </g>
+    <g>
+      <rect x="808" y="244" width="182" height="106" rx="8" fill="#FBEAD3" stroke="#B5651D" stroke-width="1.4"/>
+      <text x="899" y="268" text-anchor="middle" font-weight="700" fill="#5A2E0C">追踪预警Agent</text>
+      <text x="899" y="290" text-anchor="middle" font-size="11" fill="#5A2E0C">订阅拒收事件</text>
+      <text x="899" y="308" text-anchor="middle" font-size="11" fill="#5A2E0C">命中优先信号→</text>
+      <text x="899" y="326" text-anchor="middle" font-size="11" fill="#5A2E0C">发起仲裁申诉</text>
+    </g>
+    <g>
+      <rect x="1000" y="244" width="182" height="106" rx="8" fill="#FBEAD3" stroke="#B5651D" stroke-width="1.4"/>
+      <text x="1091" y="268" text-anchor="middle" font-weight="700" fill="#5A2E0C">检索问答Agent</text>
+      <text x="1091" y="290" text-anchor="middle" font-size="11" fill="#5A2E0C">库内RAG检索</text>
+      <text x="1091" y="308" text-anchor="middle" font-size="11" fill="#5A2E0C">大模型作答</text>
+      <text x="1091" y="326" text-anchor="middle" font-size="11" fill="#5A2E0C">标注引用来源</text>
+    </g>
+  </g>
+  <line x1="620" y1="362" x2="620" y2="384" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- L4 知识与协作层 -->
+  <text x="44" y="382" font-size="12" fill="#475569" font-weight="700">L4 · 知识与协作层（多Agent 共享黑板 + 真正被消费的事件总线）</text>
+  <rect x="120" y="390" width="480" height="78" rx="10" fill="#EBEDF1" stroke="#4A5568" stroke-width="1.5"/>
+  <text x="360" y="416" text-anchor="middle" font-weight="700" fill="#1E293B" font-size="13">向量知识库（黑板）</text>
+  <text x="360" y="434" text-anchor="middle" fill="#334155" font-size="11">演示版 SQLite + 词项重合度检索</text>
+  <text x="360" y="452" text-anchor="middle" fill="#334155" font-size="11">生产版 Embedding + 向量数据库</text>
+
+  <rect x="640" y="390" width="480" height="78" rx="10" fill="#FBEFD3" stroke="#9A6A0B" stroke-width="1.6"/>
+  <text x="880" y="416" text-anchor="middle" font-weight="700" fill="#7A430F" font-size="13">事件总线 MessageBus（发布/订阅）</text>
+  <text x="880" y="434" text-anchor="middle" fill="#7A5A20" font-size="11">subscribe/publish 真实派发，非仅日志</text>
+  <text x="880" y="452" text-anchor="middle" fill="#7A5A20" font-size="11">paper.rejected / arbitration.requested 事件</text>
+  <line x1="620" y1="468" x2="620" y2="490" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- L5 领域适配层 -->
+  <text x="44" y="488" font-size="12" fill="#475569" font-weight="700">L5 · 领域适配层（新增数据源 / 模型只需新增一个适配器）</text>
+  <rect x="120" y="496" width="310" height="66" rx="10" fill="#EBEDF1" stroke="#4A5568" stroke-width="1.5"/>
+  <text x="275" y="524" text-anchor="middle" font-weight="700" fill="#1E293B" font-size="13">论文源适配器</text>
+  <text x="275" y="542" text-anchor="middle" fill="#334155" font-size="11">arXiv 官方 API（stdlib 直连）/ 期刊(规划)</text>
+
+  <rect x="465" y="496" width="310" height="66" rx="10" fill="#EBEDF1" stroke="#4A5568" stroke-width="1.5"/>
+  <text x="620" y="524" text-anchor="middle" font-weight="700" fill="#1E293B" font-size="13">LLM 适配器（llm_client.py）</text>
+  <text x="620" y="542" text-anchor="middle" fill="#334155" font-size="11">DeepSeek ⇄ Claude 可插拔</text>
+
+  <rect x="810" y="496" width="310" height="66" rx="10" fill="#EBEDF1" stroke="#4A5568" stroke-width="1.5"/>
+  <text x="965" y="524" text-anchor="middle" font-weight="700" fill="#1E293B" font-size="13">配置持久化</text>
+  <text x="965" y="542" text-anchor="middle" fill="#334155" font-size="11">Key/模型/研究画像落盘，重启加载</text>
+  <line x1="620" y1="562" x2="620" y2="584" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- L6 外部 -->
+  <text x="44" y="582" font-size="12" fill="#475569" font-weight="700">L6 · 外部数据源与服务</text>
+  <rect x="230" y="590" width="360" height="52" rx="10" fill="#ffffff" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="410" y="621" text-anchor="middle" fill="#334155" font-size="12">arXiv 官方 Atom API</text>
+  <rect x="650" y="590" width="360" height="52" rx="10" fill="#ffffff" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="830" y="621" text-anchor="middle" fill="#334155" font-size="12">DeepSeek / Claude 大模型 API</text>
+
+  <!-- Arbitration callout -->
+  <rect x="30" y="672" width="1180" height="118" rx="12" fill="#FBEFD3" stroke="#9A6A0B" stroke-width="1.6"/>
+  <text x="48" y="696" font-size="13" font-weight="700" fill="#7A430F">★ 核心：事件驱动的冲突仲裁（区别于顺序流水线的关键，详见时序图）</text>
+  <text x="48" y="722" font-size="12.5" fill="#5A2E0C">① 筛选Agent 因“相关性不足”拒收某论文 → 经总线发布 <tspan font-weight="700">paper.rejected</tspan> 事件（并不知道谁在监听）</text>
+  <text x="48" y="744" font-size="12.5" fill="#5A2E0C">② 追踪预警Agent 订阅到该事件，发现论文命中用户高优先信号 → 发布 <tspan font-weight="700">arbitration.requested</tspan> 申诉</text>
+  <text x="48" y="766" font-size="12.5" fill="#5A2E0C">③ 编排Agent 订阅申诉，从“参考价值”这一<tspan font-weight="700">不同于筛选Agent的视角</tspan>请 LLM 二次裁决 → 改判收录 / 维持拒收</text>
+
+  <!-- Legend + tradeoffs -->
+  <rect x="40" y="808" width="18" height="18" rx="4" fill="#FBEAD3" stroke="#B5651D"/>
+  <text x="66" y="822" font-size="12.5" fill="#1E293B">LLM 驱动的智能体</text>
+  <rect x="240" y="808" width="18" height="18" rx="4" fill="#EBEDF1" stroke="#4A5568"/>
+  <text x="266" y="822" font-size="12.5" fill="#1E293B">确定性基础设施 / 数据层</text>
+  <rect x="500" y="808" width="18" height="18" rx="4" fill="#FBEFD3" stroke="#9A6A0B"/>
+  <text x="526" y="822" font-size="12.5" fill="#1E293B">事件驱动协作 / 仲裁</text>
+  <rect x="720" y="808" width="18" height="18" rx="4" fill="#ffffff" stroke="#94A3B8" stroke-dasharray="4,2"/>
+  <text x="746" y="822" font-size="12.5" fill="#1E293B">外部第三方服务</text>
+
+  <text x="40" y="854" font-size="12" fill="#475569">权衡①集中式协调 vs 分布式协商：宏观任务分解走主从式（编排Agent派发），Agent 间结果传递与冲突仲裁走对等式/事件驱动。</text>
+  <text x="40" y="874" font-size="12" fill="#475569">权衡②规则引擎 vs LLM 驱动：去重用确定性规则（查主键），相关性/仲裁/抽取/问答用 LLM 语义理解，成本花在刀刃上。</text>
+  <text x="40" y="894" font-size="12" fill="#475569">权衡③同步 vs 异步：原型同步驱动便于调试与对照时序图，单篇失败已做容错不拖垮整批；真正的多篇异步并发为后续方向。</text>
+</svg>
